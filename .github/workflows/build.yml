@@ -40,12 +40,15 @@ jobs:
               key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
               restore-keys: ${{ runner.os }}-m2-
           - name: Build with Maven
-            run: mvnw clean install
+            run: mvn clean install
+            
           - name: Initialize CodeQL
+            if: always()
             uses: github/codeql-action/init@v2
             with:
               languages: ${{ matrix.language }}
           - name: Perform CodeQL analysis
+            if: always()
             uses: github/codeql-action/analyze@v2
             with:
               category: "/language:${{ matrix.language }}"
